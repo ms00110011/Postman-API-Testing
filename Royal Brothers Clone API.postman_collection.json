@@ -1,0 +1,347 @@
+{
+	"info": {
+		"_postman_id": "a4b6ceaa-f8bf-4cd4-b6ed-77941d4c141c",
+		"name": "Royal Brothers Clone API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19958116"
+	},
+	"item": [
+		{
+			"name": "Bikes",
+			"item": [
+				{
+					"name": "Search by City",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Search bikes by city successful\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"    const bikes = pm.response.json();\r",
+									"    \r",
+									"    pm.test(\"Response is an array of bikes\", () => {\r",
+									"        pm.expect(bikes).to.be.an('array');\r",
+									"        pm.expect(bikes.length).to.be.greaterThan(0);\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"Each bike has correct structure\", () => {\r",
+									"        bikes.forEach(bike => {\r",
+									"            pm.expect(bike).to.have.property('_id');\r",
+									"            pm.expect(bike).to.have.property('name');\r",
+									"            pm.expect(bike).to.have.property('area');\r",
+									"            pm.expect(bike).to.have.property('city', 'Bangalore');\r",
+									"            pm.expect(bike).to.have.property('exkm');\r",
+									"            pm.expect(bike).to.have.property('img');\r",
+									"            pm.expect(bike).to.have.property('kmlimit');\r",
+									"            pm.expect(bike).to.have.property('priceHour');\r",
+									"        });\r",
+									"    });\r",
+									"});\r",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/searchcity/Bangalore",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"searchcity",
+								"Bangalore"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search Low to High",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Search bikes price low to high successful\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"    const bikes = pm.response.json();\r",
+									"    \r",
+									"    pm.test(\"Bikes are sorted by price ascending\", () => {\r",
+									"        for (let i = 0; i < bikes.length - 1; i++) {\r",
+									"            pm.expect(bikes[i].priceHour).to.be.lessThanOrEqual(bikes[i + 1].priceHour);\r",
+									"        }\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/searchcityASC/Bangalore",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"searchcityASC",
+								"Bangalore"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Search By High to low",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Search bikes price high to low successful\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"    const bikes = pm.response.json();\r",
+									"    \r",
+									"    pm.test(\"Bikes are sorted by price descending\", () => {\r",
+									"        for (let i = 0; i < bikes.length - 1; i++) {\r",
+									"            pm.expect(bikes[i].priceHour).to.be.greaterThanOrEqual(bikes[i + 1].priceHour);\r",
+									"        }\r",
+									"    });\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/searchcityDSC/Bangalore",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"searchcityDSC",
+								"Bangalore"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Sign up",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let timestamp = Date.now();\r",
+									"pm.environment.set('timestamp', timestamp);\r",
+									"pm.environment.set('testEmail', `test${timestamp}@example.com`);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Signup successful\", function () {\r",
+									"    \r",
+									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"    const response = pm.response.json();\r",
+									"    \r",
+									"    // Structure validation\r",
+									"    pm.test(\"Response has correct structure\", () => {\r",
+									"        pm.expect(response).to.have.property('status', 'success');\r",
+									"        pm.expect(response).to.have.property('token');\r",
+									"        pm.expect(response).to.have.property('userDetail');\r",
+									"    });\r",
+									"\r",
+									"    // User details validation\r",
+									"    pm.test(\"User details are correct\", () => {\r",
+									"        pm.expect(response.userDetail).to.have.property('name', pm.environment.get('testName'));\r",
+									"        pm.expect(response.userDetail).to.have.property('email', pm.environment.get('testEmail'));\r",
+									"        pm.expect(response.userDetail.mobile).to.equal(Number(pm.environment.get('testMobile')));\r",
+									"    });\r",
+									"\r",
+									"    // Save token for subsequent requests\r",
+									"    if (response.token) {\r",
+									"        pm.environment.set('authToken', response.token);\r",
+									"    }\r",
+									"    });"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"{{testEmail}}\",\r\n    \"mobile\": \"{{testMobile}}\",\r\n    \"name\": \"{{testName}}\",\r\n    \"password\": \"{{testPassword}}\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/signup",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Login successful\", function () {\r",
+									"    pm.response.to.have.status(200);\r",
+									"    \r",
+									"    const response = pm.response.json();\r",
+									"    \r",
+									"    pm.test(\"Response structure is correct\", () => {\r",
+									"        pm.expect(response).to.have.property('status', 'success');\r",
+									"        pm.expect(response).to.have.property('token');\r",
+									"        pm.expect(response).to.have.property('userDetail');\r",
+									"    });\r",
+									"\r",
+									"    pm.test(\"User details are present\", () => {\r",
+									"        pm.expect(response.userDetail).to.have.property('name');\r",
+									"        pm.expect(response.userDetail).to.have.property('email');\r",
+									"        pm.expect(response.userDetail).to.have.property('mobile');\r",
+									"    });\r",
+									"\r",
+									"    if (response.token) {\r",
+									"        pm.environment.set('authToken', response.token);\r",
+									"    }\r",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mobile\" :\"{{testMobile}}\",\r\n    \"password\": \"{{testPassword}}\"\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"login"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.test(\"Response time is acceptable\", function () {\r",
+					"    pm.expect(pm.response.responseTime).to.be.below(3000);\r",
+					"});\r",
+					"\r",
+					""
+				]
+			}
+		}
+	]
+}
